@@ -492,13 +492,13 @@ function woocommerce_concordpay_init()
         private function setDescription($lang) {
             switch($lang) {
                 case 'en':
-                    return 'Pay via Visa or Mastercard(ConcordPay)';
+                    return 'Pay via Visa, Mastercard, GooglePay (ConcordPay)';
                 case 'ru':
-                    return 'Оплата картой VISA или Mastercard (ConcordPay)';
+                    return 'Оплата картами VISA, Mastercard, GooglePay (ConcordPay)';
                 case 'uk':
-                    return 'Оплата карткою VISA або Mastercard (ConcordPay)';
+                    return 'Оплата картами VISA, Mastercard, GooglePay (ConcordPay)';
                 default:
-                    return 'Оплата картой VISA или Mastercard (ConcordPay)';
+                    return 'Оплата картами VISA, Mastercard, GooglePay (ConcordPay)';
             }
         }
 
