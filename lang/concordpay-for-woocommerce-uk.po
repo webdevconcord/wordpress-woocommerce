@@ -1,0 +1,239 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ConcordPay Payment Gateway for WooCommerce\n"
+"POT-Creation-Date: 2021-04-16 12:43+0300\n"
+"PO-Revision-Date: 2021-04-16 12:44+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-KeywordsList: __;esc_html__\n"
+"X-Poedit-SearchPath-0: concordpay-for-woocommerce.php\n"
+
+#: concordpay-for-woocommerce.php:23
+msgid "ConcordPay for WooCommerce"
+msgstr "ConcordPay для WooCommerce"
+
+#: concordpay-for-woocommerce.php:24
+msgid "ConcordPay Payment Gateway for WooCommerce."
+msgstr "Платіжний шлюз ConcordPay для WooCommerce."
+
+#: concordpay-for-woocommerce.php:64
+msgid "Settings"
+msgstr "Налаштування"
+
+#: concordpay-for-woocommerce.php:293
+#, php-format
+msgid ""
+"The minimum PHP version required for ConcordPay is %1$s. You are running "
+"%2$s."
+msgstr ""
+"Мінімальна версія PHP, необхідна для ConcordPay, становить %1$s. У вас "
+"запущено %2$s."
+
+#: concordpay-for-woocommerce.php:299
+msgid "WooCommerce needs to be activated."
+msgstr "WooCommerce потрібно активувати."
+
+#: concordpay-for-woocommerce.php:304
+#, php-format
+msgid ""
+"The minimum WooCommerce version required for ConcordPay is %1$s. You are "
+"running %2$s."
+msgstr ""
+"Мінімальна версія WooCommerce, необхідна для ConcordPay, становить %1$s. У "
+"вас запущено %2$s."
+
+#: concordpay-for-woocommerce.php:319
+msgid "Enable/Disable"
+msgstr "Увімкнути/Вимкнути"
+
+#: concordpay-for-woocommerce.php:321
+msgid "Enable ConcordPay Payment Module"
+msgstr "Увімкнути платіжний модуль ConcordPay"
+
+#: concordpay-for-woocommerce.php:323
+msgid "Show in the Payment List as a payment option"
+msgstr "Відображати у списку платежів як спосіб оплати"
+
+#: concordpay-for-woocommerce.php:326
+msgid "ConcordPay Widget"
+msgstr "Віджет ConcordPay"
+
+#: concordpay-for-woocommerce.php:328
+msgid "Enable ConcordPay Widget"
+msgstr "Увімкнути віджет ConcordPay"
+
+#: concordpay-for-woocommerce.php:330
+msgid "Use a ConcordPay Widget instead separate checkout page"
+msgstr ""
+"Використовувати віджет ConcordPay замість окремої сторінки оформлення "
+"замовлення"
+
+#: concordpay-for-woocommerce.php:333
+msgid "Show Logo"
+msgstr "Показувати логотип"
+
+#: concordpay-for-woocommerce.php:335
+msgid "Show the ConcordPay logo in the Payment Method section for the user"
+msgstr ""
+"Показувати логотип ConcordPay в розділі \"Спосіб оплати\" для користувача"
+
+#: concordpay-for-woocommerce.php:337
+msgid "Tick to show ConcordPay logo"
+msgstr "Поставте галочку, щоб показувати логотип ConcordPay"
+
+#: concordpay-for-woocommerce.php:341
+msgid "Title in the Payment List"
+msgstr "Найменування у списку способів оплати"
+
+#: concordpay-for-woocommerce.php:343
+msgid "Title in the list of available payment methods"
+msgstr "Найменування у списку доступних способів оплати"
+
+#: concordpay-for-woocommerce.php:348
+msgid "Merchant Account"
+msgstr "Ідентифікатор продавця"
+
+#: concordpay-for-woocommerce.php:350 concordpay-for-woocommerce.php:356
+msgid "Given to Merchant by ConcordPay"
+msgstr "Надається продавцю системою ConcordPay"
+
+#: concordpay-for-woocommerce.php:354
+msgid "Secret key"
+msgstr "Секретний ключ"
+
+#: concordpay-for-woocommerce.php:360
+msgid "Payment completed order status"
+msgstr "Статус успішно оплаченого замовлення"
+
+#: concordpay-for-woocommerce.php:364
+msgid "The default order status after successful payment."
+msgstr "Статус замовлення за замовчуванням після успішної оплати."
+
+#: concordpay-for-woocommerce.php:368
+msgid "Payment declined order status"
+msgstr "Статус замовлення відхиленого платежу"
+
+#: concordpay-for-woocommerce.php:372
+msgid "Order status when payment was declined."
+msgstr "Статус замовлення при відхиленні платежу."
+
+#: concordpay-for-woocommerce.php:376
+msgid "Payment refunded order status"
+msgstr "Статус замовлення повернутого платежу"
+
+#: concordpay-for-woocommerce.php:380
+msgid "Order status when payment was refunded."
+msgstr "Статус замовлення при поверненні платежу."
+
+#: concordpay-for-woocommerce.php:384
+msgid "System url"
+msgstr "Системний URL"
+
+#: concordpay-for-woocommerce.php:386
+msgid "Default url - https://pay.concord.ua/api/"
+msgstr "URL за замовчуванням - https://pay.concord.ua/api/"
+
+#: concordpay-for-woocommerce.php:391 concordpay-for-woocommerce.php:395
+msgid "Successful payment redirect URL"
+msgstr "URL переадресації для успішного платежу"
+
+#: concordpay-for-woocommerce.php:392 concordpay-for-woocommerce.php:400
+#: concordpay-for-woocommerce.php:408 concordpay-for-woocommerce.php:416
+msgid "Standard Page"
+msgstr "Стандартна сторінка"
+
+#: concordpay-for-woocommerce.php:399 concordpay-for-woocommerce.php:403
+msgid "Redirect URL in case of failure to make payment"
+msgstr "URL переадресації у разі неуспішного платежу"
+
+#: concordpay-for-woocommerce.php:407 concordpay-for-woocommerce.php:411
+msgid "Redirect URL failed to pay"
+msgstr "URL переадресації для неуспішного платежу"
+
+#: concordpay-for-woocommerce.php:415
+msgid "URL of the result information"
+msgstr "URL для інформації про результат"
+
+#: concordpay-for-woocommerce.php:419
+msgid ""
+"The URL to which will receive information about the result of the payment"
+msgstr "URL на яку буде надходити інформація про результат платежу"
+
+#: concordpay-for-woocommerce.php:429
+msgid "ConcordPay"
+msgstr "ConcordPay"
+
+#: concordpay-for-woocommerce.php:430
+msgid "Payment gateway"
+msgstr "Платіжний шлюз"
+
+#: concordpay-for-woocommerce.php:447
+msgid ""
+"Thank you for your order, you will now be redirected to the ConcordPay "
+"payment page"
+msgstr ""
+"Дякуємо за замовлення, тепер ви будете перенаправлені на сторінку оплати "
+"ConcordPay"
+
+#: concordpay-for-woocommerce.php:466 concordpay-for-woocommerce.php:812
+msgid ""
+"An error has occurred during payment. Please contact us to ensure your order "
+"has submitted."
+msgstr ""
+"Під час оплати сталася помилка. Будь ласка, зв’яжіться з нами, щоб "
+"переконатися, що ваше замовлення підтверджено."
+
+#: concordpay-for-woocommerce.php:470
+msgid "An error has occurred during payment. Merchant data is incorrect."
+msgstr "Під час оплати сталася помилка. Дані продавця неправильні."
+
+#: concordpay-for-woocommerce.php:476
+msgid "An error has occurred during payment. Signature is not valid."
+msgstr "Під час оплати сталася помилка. Підпис не дійсний."
+
+#: concordpay-for-woocommerce.php:524
+msgid ""
+"Thank you for shopping with us. Your account has been charged and your "
+"transaction is successful."
+msgstr ""
+"Дякуємо за покупки у нас. З вашого рахунку стягнено плату, і ваша транзакція "
+"успішно виконана."
+
+#: concordpay-for-woocommerce.php:770
+msgid "ConcordPay - Payment Visa, Mastercard, GooglePay, ApplePay"
+msgstr "ConcordPay - Оплата Visa, Mastercard, GooglePay, ApplePay"
+
+#: concordpay-for-woocommerce.php:779
+msgid "Payment Visa, Mastercard, GooglePay, ApplePay"
+msgstr "Оплата Visa, Mastercard, GooglePay, ApplePay"
+
+#: concordpay-for-woocommerce.php:911
+msgid "Payment by card on the site"
+msgstr "Оплата карткою на сайті"
+
+#: concordpay-for-woocommerce.php:959
+msgid "Default status"
+msgstr "Статус за замовчуванням"
+
+#~ msgid "WooCommerce - ConcordPay payment gateway"
+#~ msgstr "WooCommerce - платіжний шлюз ConcordPay"
+
+#~ msgid "Title"
+#~ msgstr "Найменування"
+
+#~ msgid "Select Page"
+#~ msgstr "Виберіть сторінку"
+
+#~ msgid "or select"
+#~ msgstr "або вкажіть"
+
+#~ msgid "Concord.ua"
+#~ msgstr "ConcordPay"

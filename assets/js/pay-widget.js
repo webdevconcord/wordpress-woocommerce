@@ -8,13 +8,14 @@ window.addEventListener("load",function(event) {
     const $order_review = document.getElementById("order_review");
     if ($order_review) {
         $order_review.addEventListener("submit", function (event) {
-
             const $payment_method_concordpay = document.getElementById("payment_method_concordpay");
             if ($payment_method_concordpay && $payment_method_concordpay.checked === true) {
                 event.preventDefault();
                 pay();
             }
         }, false);
+    } else {
+        pay();
     }
 });
 

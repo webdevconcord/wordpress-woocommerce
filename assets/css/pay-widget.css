@@ -175,8 +175,12 @@
 }
 
 .wcp-close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
-    background: none;
+    background: transparent;
+    border-radius: 20%;
     text-decoration: none;
     color: #6d6d6d;
     width: 30px;
