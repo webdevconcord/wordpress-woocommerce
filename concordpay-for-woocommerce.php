@@ -1,16 +1,18 @@
 <?php
 /**
- * Plugin Name: ConcordPay for WooCommerce
- * Plugin URI: https://pay.concord.ua
- * Description: ConcordPay Payment Gateway for WooCommerce.
- * Version: 1.3.3
- * Author: ConcordPay
- * Domain Path: /lang
- * Text Domain: concordpay-for-woocommerce
- * License: GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- * WC requires at least: 2.5.0
- * WC tested up to: 5.5.2
+ * Plugin Name:     ConcordPay for WooCommerce
+ * Plugin URI:      https://concordpay.concord.ua
+ * Description:     ConcordPay Payment Gateway for WooCommerce.
+ * Version:         1.3.4
+ * Author:          ConcordPay
+ * Author URI:      https://mustpay.tech
+ * Domain Path:     /lang
+ * Text Domain:     concordpay-for-woocommerce
+ * License:         GPLv2 or later
+ * License URI:     http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * WC requires at least:    3.5.0
+ * WC tested up to:         5.8.3
  *
  * @package WooCommerce\Gateways
  */
@@ -272,7 +274,7 @@ function woocommerce_concordpay_init() {
 				add_action( 'woocommerce_update_options_payment_gateways', array( &$this, 'process_admin_options' ) );
 			}
 
-			if ( is_checkout_pay_page() ) {
+			if ( is_checkout_pay_page() && $this->get_current_order()->get_payment_method() === $this->id ) {
 				add_action( 'wp_head', array( &$this, 'is_allowed_currency' ) );
 				add_action( 'wp_enqueue_scripts', array( &$this, 'link_concordpay_scripts' ) );
 				if ( $this->is_widget_enabled() ) {
@@ -534,18 +536,21 @@ function woocommerce_concordpay_init() {
 		 * @return mixed|string|void
 		 */
 		public function get_answer_to_gateway( $data ) {
-			$time                = time();
+			$time = time();
+
 			$response_to_gateway = array(
 				'orderReference' => $data['orderReference'],
 				'status'         => 'accept',
 				'time'           => $time,
 			);
-			$sign                = array();
+
+			$sign = array();
 			foreach ( $response_to_gateway as $data_key => $data_value ) {
 				$sign [] = $data_value;
 			}
-			$sign                             = implode( ';', $sign );
-			$sign                             = hash_hmac( 'md5', $sign, $this->secret_key );
+			$sign = implode( ';', $sign );
+			$sign = hash_hmac( 'md5', $sign, $this->secret_key );
+
 			$response_to_gateway['signature'] = $sign;
 
 			return wp_json_encode( $response_to_gateway );
@@ -617,19 +622,15 @@ function woocommerce_concordpay_init() {
 		 * @return string
 		 */
 		protected function generate_form( $data ) {
-			$form = "<form method='post' id='form_concordpay' action=$this->url accept-charset=utf-8>";
+			$form = PHP_EOL . "<form method='post' id='form_concordpay' action=$this->url accept-charset=utf-8>" . PHP_EOL;
 			foreach ( $data as $k => $v ) {
 				$form .= $this->print_input( $k, $v );
 			}
-			$button = "<script>
-                            function submitConcordPayForm()
-                            {
-                               document.getElementById('form_concordpay').submit();
-                            }
-                            setTimeout(submitConcordPayForm, 1500);
-                       </script>";
+			$form .= "<input type='submit' style='display:none;'/>" . PHP_EOL;
+			$form .= '</form>' . PHP_EOL;
+			$form .= "<script type='text/javascript'>window.addEventListener('DOMContentLoaded', function () { document.querySelector('#form_concordpay').submit(); }) </script>";
 
-			return "$form <input type='submit' style='display:none;'/></form> $button";
+			return $form;
 		}
 
 		/**
@@ -642,7 +643,7 @@ function woocommerce_concordpay_init() {
 		protected function print_input( $name, $val ) {
 			$str = '';
 			if ( ! is_array( $val ) ) {
-				return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars( $val ) . '">' . "\n<br />";
+				return "<input type='hidden' name='" . $name . "' value='" . htmlspecialchars( $val ) . "'><br />" . PHP_EOL;
 			}
 			foreach ( $val as $v ) {
 				$str .= $this->print_input( $name . '[]', $v );
@@ -831,7 +832,7 @@ function woocommerce_concordpay_init() {
             </script>
             <script type="text/javascript">
             const concordpay = new Concordpay();
-            const pay = function () {
+            function pay() {
                 concordpay.run({
                     "operation": "' . $concordpay_args['operation'] . '", 
                     "merchant_id": "' . $concordpay_args['merchant_id'] . '",
@@ -844,14 +845,14 @@ function woocommerce_concordpay_init() {
                     "approve_url": "' . $concordpay_args['approve_url'] . '",
                     "decline_url" : "' . $concordpay_args['decline_url'] . '",
                     "cancel_url": "' . $concordpay_args['cancel_url'] . '",
-                    "callback_url": "' . $concordpay_args['callback_url'] . '"
-                    "client_last_name": "' . $concordpay_args['client_last_name'] . '"
-                    "client_first_name": "' . $concordpay_args['client_first_name'] . '"
-                    "email": "' . $concordpay_args['email'] . '"
+                    "callback_url": "' . $concordpay_args['callback_url'] . '",
+                    "client_last_name": "' . $concordpay_args['client_last_name'] . '",
+                    "client_first_name": "' . $concordpay_args['client_first_name'] . '",
+                    "email": "' . $concordpay_args['email'] . '",
                     "phone": "' . $concordpay_args['phone'] . '"
                     }
                 );
-            };
+            }
             
             </script>';
 
@@ -859,7 +860,7 @@ function woocommerce_concordpay_init() {
 		}
 
 		/**
-		 * Get COncordPay order arguments.
+		 * Get ConcordPay order arguments.
 		 *
 		 * @param WC_Order $order Order object.
 		 *
@@ -872,25 +873,6 @@ function woocommerce_concordpay_init() {
 				get_woocommerce_currency()
 			);
 
-			$concordpay_args = array(
-				'operation'    => 'Purchase',
-				'merchant_id'  => $this->merchant_id,
-				'order_id'     => $order->get_id() . self::ORDER_SUFFIX . time(),
-				'amount'       => $order->get_total(),
-				'currency_iso' => $currency,
-				'description'  => '',
-				'approve_url'  => $this->get_redirect_url( $order, $this->approve_url ),
-				'decline_url'  => $this->get_redirect_url( $order, $this->decline_url ),
-				'cancel_url'   => $this->get_redirect_url( $order, $this->cancel_url ),
-				'callback_url' => $this->get_callback_url(),
-				'language'     => $this->get_language(),
-				// Statistics.
-				'client_last_name'  => '',
-				'client_first_name' => '',
-				'email'             => '',
-				'phone'             => '',
-			);
-
 			$phone = $order->billing_phone;
 			$phone = str_replace( array( '+', ' ', '(', ')' ), array( '', '', '', '' ), $phone );
 			if ( strlen( $phone ) === self::PHONE_LENGTH_MIN ) {
@@ -899,15 +881,34 @@ function woocommerce_concordpay_init() {
 				$phone = '3' . $phone;
 			}
 
-			$concordpay_args['description'] = __( 'Payment by card on the site', 'concordpay-for-woocommerce' ) .
-											  ' ' . get_site_url() . ', ' . $order->billing_first_name . ' ' .
-											  $order->billing_last_name . ', ' . $phone;
-
 			// Statistics.
-			$concordpay_args['client_last_name']  = $order->billing_last_name ?? '';
-			$concordpay_args['client_first_name'] = $order->billing_first_name ?? '';
-			$concordpay_args['phone']             = $phone ?? '';
-			$concordpay_args['email']             = $order->billing_email ?? '';
+			$client_last_name  = $order->billing_last_name ?? '';
+			$client_first_name = $order->billing_first_name ?? '';
+			$phone             = $phone ?? '';
+			$email             = $order->billing_email ?? '';
+
+			$description = __( 'Payment by card on the site', 'concordpay-for-woocommerce' ) .
+						   ' ' . get_site_url() . ', ' . $order->billing_first_name . ' ' .
+						   $order->billing_last_name . ', ' . $phone;
+
+			$concordpay_args = array(
+				'operation'         => 'Purchase',
+				'merchant_id'       => $this->merchant_id,
+				'order_id'          => $order->get_id() . self::ORDER_SUFFIX . time(),
+				'amount'            => $order->get_total(),
+				'currency_iso'      => $currency,
+				'description'       => $description,
+				'approve_url'       => $this->get_redirect_url( $order, $this->approve_url ),
+				'decline_url'       => $this->get_redirect_url( $order, $this->decline_url ),
+				'cancel_url'        => $this->get_redirect_url( $order, $this->cancel_url ),
+				'callback_url'      => $this->get_callback_url(),
+				'language'          => $this->get_language(),
+				// Statistics.
+				'client_last_name'  => $client_last_name,
+				'client_first_name' => $client_first_name,
+				'email'             => $email,
+				'phone'             => $phone,
+			);
 
 			$concordpay_args['signature'] = $this->get_request_signature( $concordpay_args );
 

@@ -5,7 +5,7 @@ Tags: merchant, online payment, payment gateway, acquiring, woocommerce, concord
 Requires at least: 3.5
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 1.3
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,12 +70,12 @@ ConcordPay is fully optimized for use on smartphones, tablets, laptops, desktops
 
 == Tariffs ==
 
-[See current tariffs on the ConcordPay website](https://pay.concord.ua)
+[See current tariffs on the ConcordPay website](https://concordpay.concord.ua)
 
 
 == FAQ ==
 
-Some answers you can find here [FAQ](https://pay.concord.ua)
+Some answers you can find here [FAQ](https://concordpay.concord.ua)
 
 
 == Installation instructions for the plugin ==
@@ -90,7 +90,7 @@ Go to the WordPress control panel, find the ConcordPay payment module in the “
 
 = 3. Conclusion of an agreement with a bank =
 
-1. Register on [the service portal](https://pay.concord.ua).
+1. Register on [the service portal](https://concordpay.concord.ua).
 2. Sign a contract for Internet acquiring.
 
 = 4. Settings =
@@ -123,3 +123,5 @@ Updated banner and plugin description.
 Updated banner.
 = 1.3.3 =
 Updated request parameters list.
+= 1.3.4 =
+Fixed minor bugs.
