@@ -2,12 +2,12 @@
 === ConcordPay Payment Gateway for WooCommerce ===
 Contributors: Mustpay
 Tags: merchant, online payment, payment gateway, acquiring, woocommerce, concordpay, concord, payment, commerce, applepay, visa, googlepay
-Requires at least: 3.5
-Tested up to: 5.8
-Requires PHP: 5.4
-Stable tag: 1.3.4
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Requires at least: 5.5
+Tested up to: 6.0
+Requires PHP: 7.0
+Stable tag: 1.4.0
+License: GPLv3 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 == Description ==
 
@@ -125,3 +125,8 @@ Updated banner.
 Updated request parameters list.
 = 1.3.4 =
 Fixed minor bugs.
+= 1.4.0 =
+Shows ConcordPay item in dashboard main menu.
+Updated plugin settings page.
+Add ConcordPay support link on plugin page.
+Updated localizations.

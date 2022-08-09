@@ -3,16 +3,16 @@
  * Plugin Name:     ConcordPay for WooCommerce
  * Plugin URI:      https://concordpay.concord.ua
  * Description:     ConcordPay Payment Gateway for WooCommerce.
- * Version:         1.3.4
+ * Version:         1.4.0
  * Author:          ConcordPay
  * Author URI:      https://mustpay.tech
  * Domain Path:     /lang
  * Text Domain:     concordpay-for-woocommerce
- * License:         GPLv2 or later
- * License URI:     http://www.gnu.org/licenses/gpl-2.0.html
+ * License:         GPLv3 or later
+ * License URI:     http://www.gnu.org/licenses/gpl-3.0.html
  *
- * WC requires at least:    3.5.0
- * WC tested up to:         5.8.3
+ * WC requires at least:    5.5.0
+ * WC tested up to:         6.7.0
  *
  * @package WooCommerce\Gateways
  */
@@ -25,6 +25,10 @@ add_action( 'plugins_loaded', 'woocommerce_concordpay_init', 0 );
 $plugin_name        = esc_html__( 'ConcordPay for WooCommerce', 'concordpay-for-woocommerce' );
 $plugin_description = esc_html__( 'ConcordPay Payment Gateway for WooCommerce.', 'concordpay-for-woocommerce' );
 define( 'CONCORDPAY_IMGDIR', WP_PLUGIN_URL . '/' . plugin_basename( __DIR__ ) . '/assets/img/' );
+
+// Add ConcordPay menu item to main menu.
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-concordpay-menu.php';
+new ConcordpayMenu();
 
 /**
  * Init ConcordPay
@@ -50,24 +54,6 @@ function woocommerce_concordpay_init() {
 	}
 
 	load_plugin_textdomain( 'concordpay-for-woocommerce', false, basename( __DIR__ ) . '/lang' );
-
-	// Add ConcordPay settings link on Plugins page.
-	$plugin_file = plugin_basename( __FILE__ );
-	add_filter( "plugin_action_links_$plugin_file", 'concordpay_plugin_settings_link' );
-
-	/**
-	 * Add ConcordPay settings link on Plugins page.
-	 *
-	 * @param array $links Links under the name of the plugin.
-	 *
-	 * @return array
-	 */
-	function concordpay_plugin_settings_link( $links ) {
-		$settings_link = '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=concordpay' ) . '">' . __( 'Settings', 'concordpay-for-woocommerce' ) . '</a>';
-		array_unshift( $links, $settings_link );
-
-		return $links;
-	}
 
 	/**
 	 * ConcordPay Payment Gateway class
@@ -173,6 +159,8 @@ function woocommerce_concordpay_init() {
 		 */
 		protected $url = 'https://pay.concord.ua/api/';
 
+		const CONCORDPAY_SITE_URL = 'https://concordpay.concord.ua';
+
 		const SIGNATURE_SEPARATOR         = ';';
 		const ORDER_NEW                   = 'New';
 		const ORDER_DECLINED              = 'Declined';
@@ -225,7 +213,7 @@ function woocommerce_concordpay_init() {
 
 			$this->id                 = 'concordpay';
 			$this->method_title       = 'ConcordPay';
-			$this->method_description = 'Payment gateway';
+			$this->method_description = __( 'A payment service that allows you to accept payments with Visa/MasterCard payment cards and GooglePay/ApplePay mobile wallets', 'concordpay-for-woocommerce' );
 			$this->has_fields         = false;
 
 			$this->title       = $this->get_gateway_title();
@@ -235,10 +223,10 @@ function woocommerce_concordpay_init() {
 			$this->init_settings();
 
 			if ( 'yes' === $this->settings['showlogo'] ) {
-				$this->icon = CONCORDPAY_IMGDIR . 'concordpay.svg';
+				$this->icon = CONCORDPAY_IMGDIR . 'concordpay-2.svg';
 			}
 
-			$this->img  = CONCORDPAY_IMGDIR . 'concordpay.svg';
+			$this->img  = CONCORDPAY_IMGDIR . 'concordpay-2.svg';
 			$this->lang = $this->get_language();
 
 			$this->approve_url  = $this->settings['approve_url'];
@@ -283,6 +271,13 @@ function woocommerce_concordpay_init() {
 			}
 
 			add_action( 'woocommerce_receipt_concordpay', array( &$this, 'receipt_page' ) );
+
+			// Add ConcordPay settings link on Plugins page.
+			$plugin_file = plugin_basename( __FILE__ );
+			add_filter( "plugin_action_links_$plugin_file", array( &$this, 'concordpay_plugin_settings_link' ) );
+
+			// Support plugin link in plugin list.
+			add_filter( "plugin_action_links_{$plugin_file}", array( &$this, 'concordpay_plugin_support_link' ) );
 		}
 
 		/**
@@ -428,12 +423,43 @@ function woocommerce_concordpay_init() {
 		 * Admin Panel Options
 		 */
 		public function admin_options() {
-			echo '<h3>' . esc_html__( 'ConcordPay', 'concordpay-for-woocommerce' ) . '</h3>';
-			echo '<p>' . esc_html__( 'Payment gateway', 'concordpay-for-woocommerce' ) . '</p>';
+			echo '<h3>' . esc_html__( 'Payment gateway', 'concordpay-for-woocommerce' );
+			wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) );
+			echo '</h3>';
+			echo '<a href="' . esc_html( self::CONCORDPAY_SITE_URL ) . '"><img src="' . esc_attr( CONCORDPAY_IMGDIR . 'concordpay.svg' ) . '" alt="ConcordPay"></a>';
 			echo '<table class="form-table">';
 			// Generate the HTML For the settings form.
 			$this->generate_settings_html();
 			echo '</table>';
+		}
+
+		/**
+		 * Add ConcordPay settings link on Plugins page.
+		 *
+		 * @param array $links Links under the name of the plugin.
+		 *
+		 * @return array
+		 */
+		public function concordpay_plugin_settings_link( $links ) {
+			$settings_link = '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=concordpay' ) . '">' . __( 'Settings', 'concordpay-for-woocommerce' ) . '</a>';
+			array_unshift( $links, $settings_link );
+
+			return $links;
+		}
+
+		/**
+		 * Adds Concordpay support link in plugin list.
+		 *
+		 * @param array $links Plugin links in menu list.
+		 *
+		 * @return array
+		 */
+		public function concordpay_plugin_support_link( $links ): array {
+			unset( $links['edit'] );
+
+			$links[] = '<a target="_blank" href="https://t.me/ConcordPaySupport">' . __( 'Support', 'concordpay-for-woocommerce' ) . '</a>';
+
+			return $links;
 		}
 
 		/**
