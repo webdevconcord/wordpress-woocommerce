@@ -24,5 +24,3 @@ License URI: [License](https://opensource.org/licenses/GPL-3.0)
    - *Секретный ключ (Secret key)*.
 
 *Модуль протестирован для работы с WordPress 6.1, WooCommerce 7.1 и PHP 8.1.*
-
-![Settings](settings.png)
