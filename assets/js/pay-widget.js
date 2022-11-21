@@ -101,6 +101,7 @@ Concordpay.prototype.createFrame = function () {
 	this.frame.setAttribute( 'name', this.name + 'Frame' );
 	this.frame.setAttribute( 'src', this.defaultTarget );
 	this.frame.setAttribute( 'allow', 'payment' );
+	this.frame.setAttribute( 'allowpaymentrequest', 'true' );
 	this.frame.setAttribute( 'frameborder', '0' );
 	this.frame.classList.add( 'wcp-widget-frame' );
 	if (this.isMobile && this.isSafari) {

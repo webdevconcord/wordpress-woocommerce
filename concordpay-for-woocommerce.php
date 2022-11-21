@@ -3,7 +3,7 @@
  * Plugin Name:     ConcordPay for WooCommerce
  * Plugin URI:      https://concordpay.concord.ua
  * Description:     ConcordPay Payment Gateway for WooCommerce.
- * Version:         1.4.0
+ * Version:         1.4.2
  * Author:          ConcordPay
  * Author URI:      https://mustpay.tech
  * Domain Path:     /lang
@@ -11,8 +11,8 @@
  * License:         GPLv3 or later
  * License URI:     http://www.gnu.org/licenses/gpl-3.0.html
  *
- * WC requires at least:    5.5.0
- * WC tested up to:         6.7.0
+ * WC requires at least:    6.0.0
+ * WC tested up to:         7.1.0
  *
  * @package WooCommerce\Gateways
  */
@@ -65,7 +65,7 @@ function woocommerce_concordpay_init() {
 	 * @property string $callback_url
 	 * @property string $title
 	 * @property string $description
-	 * @property array $add_params
+	 * @property array  $add_params
 	 * @property string $merchant_id
 	 * @property string $secret_key
 	 * @property string $concordpay_widget
@@ -227,7 +227,7 @@ function woocommerce_concordpay_init() {
 			}
 
 			$this->img  = CONCORDPAY_IMGDIR . 'concordpay-2.svg';
-			$this->lang = $this->get_language();
+			$this->lang = $this->settings['language'];
 
 			$this->approve_url  = $this->settings['approve_url'];
 			$this->decline_url  = $this->settings['decline_url'];
@@ -414,6 +414,14 @@ function woocommerce_concordpay_init() {
 					'default'     => '0',
 					'type'        => 'select',
 					'description' => __( 'The URL to which will receive information about the result of the payment', 'concordpay-for-woocommerce' ),
+					'desc_tip'    => true,
+				),
+				'language'        => array(
+					'title'       => __( 'Payment page language', 'concordpay-for-woocommerce' ),
+					'options'     => self::get_languages(),
+					'default'     => 'ua',
+					'type'        => 'select',
+					'description' => __( 'ConcordPay payment page language', 'concordpay-for-woocommerce' ),
 					'desc_tip'    => true,
 				),
 			);
@@ -635,7 +643,6 @@ function woocommerce_concordpay_init() {
 		 * @return string
 		 */
 		protected function generate_concordpay_form( $order ) {
-			$order_date      = $order->post->post_date ?? $order->order_date;
 			$concordpay_args = $this->get_concordpay_args( $order );
 
 			return $this->generate_form( $concordpay_args );
@@ -734,8 +741,8 @@ function woocommerce_concordpay_init() {
 		 */
 		public function get_redirect_url( $order, $url ) {
 			return ( '' === $url || '0' === $url )
-			? $order->get_checkout_order_received_url()
-			: get_permalink( $url );
+				? $order->get_checkout_order_received_url()
+				: get_permalink( $url );
 		}
 
 		/**
@@ -779,7 +786,8 @@ function woocommerce_concordpay_init() {
 			$order_statuses = array();
 
 			foreach ( wc_get_order_statuses() as $key => $label ) {
-				$new_key                    = str_replace( 'wc-', '', $key );
+				$new_key = str_replace( 'wc-', '', $key );
+
 				$order_statuses[ $new_key ] = $label;
 			}
 
@@ -899,7 +907,7 @@ function woocommerce_concordpay_init() {
 				get_woocommerce_currency()
 			);
 
-			$phone = $order->billing_phone;
+			$phone = $order->get_billing_phone();
 			$phone = str_replace( array( '+', ' ', '(', ')' ), array( '', '', '', '' ), $phone );
 			if ( strlen( $phone ) === self::PHONE_LENGTH_MIN ) {
 				$phone = '38' . $phone;
@@ -908,14 +916,14 @@ function woocommerce_concordpay_init() {
 			}
 
 			// Statistics.
-			$client_last_name  = $order->billing_last_name ?? '';
-			$client_first_name = $order->billing_first_name ?? '';
+			$client_last_name  = $order->get_billing_last_name() ?? '';
+			$client_first_name = $order->get_billing_first_name() ?? '';
 			$phone             = $phone ?? '';
-			$email             = $order->billing_email ?? '';
+			$email             = $order->get_billing_email() ?? '';
 
 			$description = __( 'Payment by card on the site', 'concordpay-for-woocommerce' ) .
-						   ' ' . get_site_url() . ', ' . $order->billing_first_name . ' ' .
-						   $order->billing_last_name . ', ' . $phone;
+						   ' ' . get_site_url() . ', ' . $order->get_billing_first_name() . ' ' .
+						   $order->get_billing_last_name() . ', ' . $phone;
 
 			$concordpay_args = array(
 				'operation'         => 'Purchase',
@@ -928,7 +936,7 @@ function woocommerce_concordpay_init() {
 				'decline_url'       => $this->get_redirect_url( $order, $this->decline_url ),
 				'cancel_url'        => $this->get_redirect_url( $order, $this->cancel_url ),
 				'callback_url'      => $this->get_callback_url(),
-				'language'          => $this->get_language(),
+				'language'          => $this->lang,
 				// Statistics.
 				'client_last_name'  => $client_last_name,
 				'client_first_name' => $client_first_name,
@@ -979,7 +987,8 @@ function woocommerce_concordpay_init() {
 		 */
 		private function get_payment_order_statuses() {
 			$order_statuses = function_exists( 'wc_get_order_statuses' ) ? wc_get_order_statuses() : array();
-			$statuses       = array(
+
+			$statuses = array(
 				'default' => __( 'Default status', 'concordpay-for-woocommerce' ),
 			);
 			if ( $order_statuses ) {
@@ -987,7 +996,21 @@ function woocommerce_concordpay_init() {
 					$statuses[ str_replace( 'wc-', '', $k ) ] = $v;
 				}
 			}
+
 			return $statuses;
+		}
+
+		/**
+		 * List of allowed payment page languages.
+		 *
+		 * @return array
+		 */
+		protected static function get_languages() {
+			return array(
+				'ua' => __( 'UA', 'concordpay-for-woocommerce' ),
+				'ru' => __( 'RU', 'concordpay-for-woocommerce' ),
+				'en' => __( 'EN', 'concordpay-for-woocommerce' ),
+			);
 		}
 
 		/**

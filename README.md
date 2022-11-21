@@ -2,11 +2,11 @@
 
 Creator: [ConcordPay](https://concordpay.concord.ua)<br>
 Tags: WordPress, ConcordPay, payment, payment gateway, credit card, Visa, Masterсard, Apple Pay, Google Pay<br>
-Requires at least: WordPress 5.5, WooCommerce 5.8<br>
+Requires at least: WordPress 5.5, WooCommerce 6.0<br>
 License: GNU GPL v3.0<br>
 License URI: [License](https://opensource.org/licenses/GPL-3.0)
 
-Для работы модуля у вас должен быть установлен плагин **WooCommerce 5+**.
+Для работы модуля у вас должен быть установлен плагин **WooCommerce 6+**.
 
 ## Установка
 
@@ -23,6 +23,6 @@ License URI: [License](https://opensource.org/licenses/GPL-3.0)
    - *Идентификатор торговца (Merchant ID)*;
    - *Секретный ключ (Secret key)*.
 
-*Модуль протестирован для работы с WordPress 6.0, WooCommerce 6.7 и PHP 8.1.*
+*Модуль протестирован для работы с WordPress 6.1, WooCommerce 7.1 и PHP 8.1.*
 
 ![Settings](settings.png)
